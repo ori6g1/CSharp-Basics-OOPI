@@ -13,7 +13,7 @@ car.Accelerate(3);
 Console.WriteLine($"Distance: {car.TotalDistanceCovered}");
 Console.WriteLine($"Speed: {car.CurrentSpeed}\r\n");
 
-car.Accelerate(4);
+car.Accelerate(-3);
 Console.WriteLine($"Distance: {car.TotalDistanceCovered}");
 Console.WriteLine($"Speed: {car.CurrentSpeed}\r\n");
 

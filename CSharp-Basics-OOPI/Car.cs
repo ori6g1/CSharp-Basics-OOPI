@@ -31,53 +31,79 @@
     public void Start()
     {
         if (!TurnedOn)
+        {
             TurnedOn = true;
+            return;
+        }
+        Console.WriteLine("The car is already turned on.");
     }
 
     public void TurnOff()
     {
         if (TurnedOn && CurrentSpeed == 0)
+        {
             TurnedOn = false;
+            return;
+        }
+        Console.WriteLine("The car could not turn off.");
     }
 
     public void Accelerate(int seconds)
     {
-        if (seconds <= 0 || !TurnedOn)
+        if (TurnedOn && seconds >= 0)
+        {
+            int startingSpeed = CurrentSpeed;
+
+            for (int i = 0; i < seconds; i++) 
+            {
+                if ((CurrentSpeed + Acceleration) >= MaxSpeed)
+                    CurrentSpeed = MaxSpeed;
+                else
+                    CurrentSpeed += Acceleration;
+                this.Drive(startingSpeed);
+            }
             return;
-
-        int startingSpeed = CurrentSpeed;
-
-        if ((CurrentSpeed + (Acceleration * seconds)) >= MaxSpeed)
-                CurrentSpeed = MaxSpeed;
-        else
-                CurrentSpeed += Acceleration * seconds;
-
-        TotalDistanceCovered += (startingSpeed + ((CurrentSpeed - startingSpeed) / 2)) * seconds;
+        }
+        Console.WriteLine("The car is either turned off, or was given a number of seconds it cannot drive.");
     }
 
     public void Deccelerate(int seconds)
     {
-        if (seconds <= 0 || !TurnedOn)
+        if (TurnedOn && seconds >= 0)
+        {
+            int startingSpeed = CurrentSpeed;
+
+            for (int i = 0; i < seconds; i++)
+            {
+                if ((CurrentSpeed - Deceleration) <= 0)
+                    CurrentSpeed = 0;
+                else
+                    CurrentSpeed -= Deceleration;
+                this.Drive(startingSpeed);
+            }
             return;
-
-        int startingSpeed = CurrentSpeed;
-
-        if ((CurrentSpeed - (Deceleration * seconds)) <= 0)
-            CurrentSpeed = 0;
-        else
-            CurrentSpeed -= Deceleration * seconds;
-
-        TotalDistanceCovered += (startingSpeed + ((CurrentSpeed - startingSpeed) / 2)) * seconds;
+        }
+        Console.WriteLine("The car is either turned off, or was given a number of seconds it cannot drive.");
     }
 
     public void Cruise(int seconds) 
     {
-        if (TurnedOn)
-            TotalDistanceCovered += (seconds * CurrentSpeed);
+        if (TurnedOn && seconds >= 0)
+        {
+            for (int i = 0; i < seconds; i++)
+                this.Drive();
+            return;
+        }
+        Console.WriteLine("The car is either turned off, or was given a number of seconds it cannot drive.");
     }
 
     private void Drive()
     {
+        TotalDistanceCovered += CurrentSpeed;
+    }
 
+    private void Drive(int startingSpeed)
+    {
+        TotalDistanceCovered += (startingSpeed + ((CurrentSpeed - startingSpeed) / 2));
     }
 }
